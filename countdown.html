@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>June 22 Countdown</title>
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F3F5F2;
+    --surface: #FFFFFF;
+    --ink: #16241F;
+    --muted: #5E6F68;
+    --line: #D5DDD8;
+    --accent: #1F7A5C;
+    --accent-soft: #DCEDE5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0F1714;
+      --surface: #16211D;
+      --ink: #E6EEEA;
+      --muted: #93A59D;
+      --line: #25332D;
+      --accent: #5CC49A;
+      --accent-soft: #1C3229;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0F1714;
+    --surface: #16211D;
+    --ink: #E6EEEA;
+    --muted: #93A59D;
+    --line: #25332D;
+    --accent: #5CC49A;
+    --accent-soft: #1C3229;
+  }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 16px;
+    padding-block: 32px;
+    box-sizing: border-box;
+  }
+  main {
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 8px;
+  }
+  h1 {
+    font-size: clamp(34px, 8vw, 56px);
+    line-height: 1.02;
+    font-weight: 700;
+    margin: 0;
+    text-wrap: balance;
+  }
+  h1 span { color: var(--accent); }
+  .clock {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  .unit {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 8px 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: clamp(28px, 8.5vw, 52px);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .unit:first-child .num { color: var(--accent); }
+  .label {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .progress { display: flex; flex-direction: column; gap: 8px; }
+  .bar {
+    height: 8px;
+    background: var(--accent-soft);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+  .fill {
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    border-radius: 99px;
+    transition: width 0.6s ease;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    font-size: 15px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    margin: 0;
+  }
+  .facts b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .done {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  @media (prefers-reduced-motion: reduce) { .fill { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">Counting down to</p>
+    <h1>Tuesday, <span>June 22, 2027</span></h1>
+  </header>
+
+  <section class="clock" id="clock" aria-live="off">
+    <div class="unit"><div class="num" id="d">000</div><div class="label">Days</div></div>
+    <div class="unit"><div class="num" id="h">00</div><div class="label">Hours</div></div>
+    <div class="unit"><div class="num" id="m">00</div><div class="label">Minutes</div></div>
+    <div class="unit"><div class="num" id="s">00</div><div class="label">Seconds</div></div>
+  </section>
+
+  <p class="done" id="done" hidden>The day is here. 🎉</p>
+
+  <section class="progress" aria-label="Progress since September 25, 2026">
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <div class="row"><span>Sep 25, 2026</span><span id="pct">0%</span><span>Jun 22, 2027</span></div>
+  </section>
+
+  <p class="facts">
+    <span><b id="weeks">0</b> weeks</span>
+    <span><b id="weekends">0</b> weekends left</span>
+    <span><b id="hours">0</b> hours in total</span>
+  </p>
+</main>
+
+<script>
+  // Midnight, June 22 2027, Toronto time (EDT, UTC−4)
+  const target = new Date("2027-06-22T00:00:00-04:00").getTime();
+  const start = new Date("2026-09-25T00:00:00-04:00").getTime();
+  const $ = id => document.getElementById(id);
+  const pad = (n, w = 2) => String(n).padStart(w, "0");
+
+  function weekendsLeft(now) {
+    let count = 0;
+    const d = new Date(now);
+    d.setHours(0, 0, 0, 0);
+    while (d.getTime() < target) {
+      if (d.getDay() === 6) count++;
+      d.setDate(d.getDate() + 1);
+    }
+    return count;
+  }
+
+  let lastDay = -1;
+  function tick() {
+    const now = Date.now();
+    let diff = Math.max(0, target - now);
+    if (diff === 0) {
+      $("clock").hidden = true;
+      $("done").hidden = false;
+    }
+    const sec = Math.floor(diff / 1000);
+    const days = Math.floor(sec / 86400);
+    $("d").textContent = days;
+    $("h").textContent = pad(Math.floor(sec % 86400 / 3600));
+    $("m").textContent = pad(Math.floor(sec % 3600 / 60));
+    $("s").textContent = pad(sec % 60);
+
+    const p = Math.min(100, Math.max(0, (now - start) / (target - start) * 100));
+    $("fill").style.width = p.toFixed(2) + "%";
+    $("pct").textContent = p.toFixed(1) + "% there";
+
+    $("weeks").textContent = (days / 7).toFixed(1);
+    $("hours").textContent = Math.floor(sec / 3600).toLocaleString();
+    if (days !== lastDay) { $("weekends").textContent = weekendsLeft(now); lastDay = days; }
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
+
+</body></html>
